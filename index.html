@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ConcretoPro ABNT</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="print-header" class="print-header" style="display: none;">
+        <div class="header-content">
+            <h1 class="print-title">Relatório de Materiais</h1>
+            <div class="print-info">
+                <p><strong>Cliente:</strong> <span id="print-client"></span></p>
+                <p><strong>Responsável:</strong> <span id="print-provider"></span></p>
+                <p><strong>Data:</strong> <span id="print-date"></span></p>
+            </div>
+        </div>
+        <hr>
+    </div>
+
+    <div id="app">
+        <header class="app-header">
+            <h1>ConcretoPro <span class="highlight">ABNT</span></h1>
+            <p>Dosagem de Concreto Estrutural NBR 6118 / 12655</p>
+        </header>
+
+        <nav class="app-nav">
+            <button class="nav-tab active" data-tab="engineer">👷 Modo Engenheiro</button>
+            <button class="nav-tab" data-tab="custom">🎨 Traço Personalizado</button>
+            <button class="nav-tab" data-tab="store">🏪 Modo Loja</button>
+        </nav>
+
+        <main class="spreadsheet-container">
+
+            <!-- CARD 1: GEOMETRY & DATA -->
+            <section class="card geometry-card">
+                <div class="card-header">
+                    <h2>1. Dados & Geometria</h2>
+                </div>
+                <div class="input-grid">
+                    <!-- Client Name moved here -->
+                    <div class="input-group full-width">
+                        <label for="client-name">Nome do Cliente</label>
+                        <input type="text" id="client-name" placeholder="Nome do Cliente / Obra">
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <div class="input-group">
+                        <label for="comprimento">Comprimento (m)</label>
+                        <input type="number" id="comprimento" placeholder="0.00" step="0.01" min="0">
+                    </div>
+                    <div class="input-group">
+                        <label for="largura">Largura (m)</label>
+                        <input type="number" id="largura" placeholder="0.00" step="0.01" min="0">
+                    </div>
+                    <div class="input-group">
+                        <label for="espessura">Espessura</label>
+                        <div class="combined-input">
+                            <input type="number" id="espessura" placeholder="0.00" step="0.01" min="0">
+                            <select id="unidade-espessura">
+                                <option value="cm">cm</option>
+                                <option value="m">m</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="result-highlight">
+                        <span class="label">Volume Teórico</span>
+                        <span class="value" id="volume-teorico">0.00 m³</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB CONTENT: ENGINEER MODE -->
+            <section id="tab-engineer" class="card config-card tab-content active">
+                <div class="card-header">
+                    <h2>2. Configuração (Norma)</h2>
+                </div>
+                <div class="input-grid">
+                    <div class="input-group full-width">
+                        <label for="engineer-name">Nome do Engenheiro</label>
+                        <input type="text" id="engineer-name" placeholder="Seu Nome / CREA">
+                    </div>
+                    <div class="input-group full-width">
+                        <label for="fck">Classe de Resistência (fck)</label>
+                        <select id="fck">
+                            <option value="20">20 MPa (300 kg/m³ 1:2,7:3,3)</option>
+                            <option value="25">25 MPa (350 kg/m³ 1:2,4:3,0)</option>
+                            <option value="30">30 MPa (400 kg/m³ 1:2,1:2,8)</option>
+                            <option value="35">35 MPa (450 kg/m³ 1:1,8:2,6)</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB CONTENT: CUSTOM MIX -->
+            <section id="tab-custom" class="card config-card tab-content" style="display: none;">
+                <div class="card-header">
+                    <h2>2. Traço Personalizado</h2>
+                </div>
+                <div class="input-grid">
+                    <div class="input-group full-width">
+                        <label>Base: 1 Saco de Cimento (50kg)</label>
+                        <p class="helper-text">Defina a proporção de agregados para cada saco.</p>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="custom-sand">Areia (Qtd)</label>
+                        <input type="number" id="custom-sand" placeholder="Ex: 4" step="0.5">
+                    </div>
+                    <div class="input-group">
+                        <label for="custom-sand-unit">Unidade Areia</label>
+                        <select id="custom-sand-unit">
+                            <option value="lata">Latas (18L)</option>
+                            <option value="carrinho">Carrinhos</option>
+                            <option value="pa">Pás</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="custom-gravel">Brita (Qtd)</label>
+                        <input type="number" id="custom-gravel" placeholder="Ex: 3" step="0.5">
+                    </div>
+                    <div class="input-group">
+                        <label for="custom-gravel-unit">Unidade Brita</label>
+                        <select id="custom-gravel-unit">
+                            <option value="lata">Latas (18L)</option>
+                            <option value="carrinho">Carrinhos</option>
+                            <option value="pa">Pás</option>
+                        </select>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <div class="input-group">
+                        <label for="vol-carrinho">Vol. Carrinho (L)</label>
+                        <input type="number" id="vol-carrinho" value="50">
+                    </div>
+                    <div class="input-group">
+                        <label for="vol-pa">Vol. Pá (L)</label>
+                        <input type="number" id="vol-pa" value="8">
+                    </div>
+                </div>
+            </section>
+
+            <!-- TECHNICAL PARAMETERS (Collapsible or Block) -->
+            <section class="card params-card">
+                <div class="card-header">
+                    <h2>3. Parâmetros Técnicos & Ajustes</h2>
+                </div>
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label>Tipo Cimento</label>
+                        <select id="tipo-cimento">
+                            <option value="CPII">CP II (Composto)</option>
+                            <option value="CPIII">CP III (Alto Forno)</option>
+                            <option value="CPV">CP V (ARI)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Tipo Brita</label>
+                        <select id="tipo-brita">
+                            <option value="1">Brita 1</option>
+                            <option value="0">Brita 0</option>
+                            <option value="2">Brita 2</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="sand-swell">Empolamento Areia (%)</label>
+                        <input type="number" id="sand-swell" value="0" placeholder="Ex: 25">
+                        <span class="tiny-note">Aumenta vol. compra</span>
+                    </div>
+                    <div class="input-group">
+                        <label for="loss-factor">Perda Material (%)</label>
+                        <input type="number" id="loss-factor" value="0" placeholder="Ex: 10">
+                    </div>
+                </div>
+            </section>
+
+            <!-- STORE MODE SETTINGS -->
+            <section id="tab-store" class="card config-card tab-content" style="display: none;">
+                <div class="card-header">
+                    <h2>Configuração da Loja</h2>
+                </div>
+                <div class="input-grid">
+                    <div class="input-group full-width">
+                        <label for="store-name">Nome da Loja</label>
+                        <input type="text" id="store-name" placeholder="Nome da Loja">
+                    </div>
+                </div>
+            </section>
+
+            <!-- COSTS SECTION -->
+            <section class="card prices-card">
+                <div class="card-header">
+                    <h2>Tabela de Preços (Unitários)</h2>
+                </div>
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label>Cimento (Saco 50kg)</label>
+                        <div class="money-input"><span>R$</span><input type="number" id="preco-cimento" value="55.00"
+                                step="0.50"></div>
+                    </div>
+
+                    <!-- Areia Pricing -->
+                    <div class="input-group full-width pricing-row">
+                        <label>Areia (Preço)</label>
+                        <div class="combined-input pricing-combined">
+                            <select id="unit-areia" class="unit-select">
+                                <option value="m3">por m³</option>
+                                <option value="carrada">por Carrada</option>
+                                <option value="lata">por Lata (18L)</option>
+                            </select>
+
+                            <div class="money-input">
+                                <span>R$</span>
+                                <input type="number" id="preco-areia" value="550.00" step="1.00" placeholder="Preço">
+                            </div>
+
+                            <input type="number" id="vol-carrada-areia" class="vol-input" placeholder="m³ Carrada"
+                                value="12" style="display: none;" title="Volume da Carrada em m³">
+                        </div>
+                    </div>
+
+                    <!-- Brita Pricing -->
+                    <div class="input-group full-width pricing-row">
+                        <label>Brita (Preço)</label>
+                        <div class="combined-input pricing-combined">
+                            <select id="unit-brita" class="unit-select">
+                                <option value="m3">por m³</option>
+                                <option value="carrada">por Carrada</option>
+                                <option value="lata">por Lata (18L)</option>
+                            </select>
+
+                            <div class="money-input">
+                                <span>R$</span>
+                                <input type="number" id="preco-brita" value="380.00" step="1.00" placeholder="Preço">
+                            </div>
+
+                            <input type="number" id="vol-carrada-brita" class="vol-input" placeholder="m³ Carrada"
+                                value="12" style="display: none;" title="Volume da Carrada em m³">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- RESULTS -->
+            <section class="card results-card">
+                <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                    <h2>Resumo & Orçamento</h2>
+                    <button id="btn-report" class="action-btn">🖨️ Gerar Relatório</button>
+                </div>
+
+                <div class="results-table">
+                    <div class="table-row header">
+                        <div class="col">Material</div>
+                        <div class="col center">Qtd. Real</div>
+                        <div class="col center">Qtd. Compra (+Perda)</div>
+                        <div class="col right">Custo Final</div>
+                    </div>
+
+                    <div class="table-row">
+                        <div class="col material-name">
+                            <strong>Cimento</strong>
+                            <span class="sub-text">Sacos 50kg</span>
+                        </div>
+                        <div class="col center" id="res-cim-real">0.0</div>
+                        <div class="col center highlight-val" id="res-cim-compra">0.0</div>
+                        <div class="col right money" id="res-cim-custo">R$ 0,00</div>
+                    </div>
+
+                    <div class="table-row">
+                        <div class="col material-name">
+                            <strong>Areia</strong>
+                            <span class="sub-text" id="lbl-areia-tipo">m³ / Latas</span>
+                        </div>
+                        <div class="col center" id="res-areia-real">0.00</div>
+                        <div class="col center highlight-val" id="res-areia-compra">0.00</div>
+                        <div class="col right money" id="res-areia-custo">R$ 0,00</div>
+                    </div>
+
+                    <div class="table-row">
+                        <div class="col material-name">
+                            <strong>Brita</strong>
+                            <span class="sub-text" id="lbl-brita-tipo">m³ / Latas</span>
+                        </div>
+                        <div class="col center" id="res-brita-real">0.00</div>
+                        <div class="col center highlight-val" id="res-brita-compra">0.00</div>
+                        <div class="col right money" id="res-brita-custo">R$ 0,00</div>
+                    </div>
+
+                    <div class="table-row total-row">
+                        <div class="col total-label">TOTAL ESTIMADO</div>
+                        <div class="col"></div>
+                        <div class="col"></div>
+                        <div class="col right total-value" id="res-total-custo">R$ 0,00</div>
+                    </div>
+                </div>
+
+                <!-- Footer Summary Text -->
+                <div id="report-summary-text" class="report-summary">
+                    <!-- Dynamic text will be injected here -->
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="main.js" defer></script>
+</body>
+
+</html>

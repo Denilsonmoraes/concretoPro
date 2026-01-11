@@ -1,0 +1,616 @@
+:root {
+    --bg-color: #f3f4f6;
+    --card-bg: #ffffff;
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+    --accent-color: #2563eb;
+    --accent-hover: #1d4ed8;
+    --border-color: #e5e7eb;
+    --success-color: #059669;
+    --header-bg: #111827;
+    --header-text: #ffffff;
+    --font-main: 'Inter', sans-serif;
+    --font-mono: 'Roboto Mono', monospace;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+#app {
+    max-width: 1200px;
+    margin: 0 auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.app-header {
+    background-color: var(--header-bg);
+    color: var(--header-text);
+    padding: 1.5rem 2rem;
+    text-align: center;
+    border-bottom: 4px solid var(--accent-color);
+}
+
+.app-header h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.05em;
+}
+
+.app-header .highlight {
+    color: var(--accent-color);
+}
+
+.app-header p {
+    color: #9ca3af;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+}
+
+.spreadsheet-container {
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    /* Two columns for top section */
+    gap: 1.5rem;
+    flex: 1;
+}
+
+.card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Card Grid Layout */
+.geometry-card,
+.config-card,
+.params-card,
+.prices-card {
+    grid-column: span 1;
+}
+
+/* Make results card take full width below */
+.results-card {
+    grid-column: span 2;
+    margin-top: 0.5rem;
+}
+
+.card-header {
+    background-color: #f9fafb;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.card-header h2 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.input-grid {
+    padding: 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.input-group.full-width {
+    grid-column: span 2;
+}
+
+label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+input,
+select {
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    background-color: #f9fafb;
+    transition: all 0.2s;
+    width: 100%;
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    background-color: #fff;
+}
+
+/* Unit Selector for Thickness */
+.combined-input {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.combined-input input {
+    flex: 2;
+}
+
+.combined-input select {
+    flex: 1;
+    min-width: 80px;
+}
+
+/* Result Highlight in Input Card */
+.result-highlight {
+    grid-column: span 2;
+    background-color: #eff6ff;
+    border: 1px dashed var(--accent-color);
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.5rem;
+}
+
+.result-highlight .label {
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+.result-highlight .value {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--accent-color);
+}
+
+/* Money Input */
+.money-input {
+    position: relative;
+}
+
+.money-input span {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.money-input input {
+    padding-left: 2.5rem;
+    text-align: right;
+}
+
+.divider {
+    grid-column: span 2;
+    height: 1px;
+    background-color: var(--border-color);
+    margin: 0.5rem 0;
+}
+
+/* Toggle Switch */
+.toggle-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f3f4f6;
+    padding: 0.75rem;
+    border-radius: 8px;
+    margin-top: 0.5rem;
+}
+
+.toggle-switch {
+    display: flex;
+    background: #e5e7eb;
+    padding: 4px;
+    border-radius: 6px;
+}
+
+.toggle-switch input {
+    display: none;
+}
+
+.toggle-switch label {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    transition: all 0.2s;
+    text-transform: none;
+    /* Reset uppercase */
+}
+
+.toggle-switch input:checked+label {
+    background-color: white;
+    color: var(--text-primary);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    font-weight: 700;
+}
+
+/* Results Table */
+.results-table {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.table-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1.5fr;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    align-items: center;
+}
+
+.table-row.header {
+    background-color: #f9fafb;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    letter-spacing: 0.05em;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.col.center {
+    text-align: center;
+}
+
+.col.right {
+    text-align: right;
+}
+
+.material-name {
+    display: flex;
+    flex-direction: column;
+}
+
+.material-name strong {
+    font-size: 1rem;
+    color: var(--text-primary);
+}
+
+.sub-text {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.col.money {
+    font-family: var(--font-mono);
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.col.highlight-val {
+    font-weight: 700;
+    color: var(--accent-color);
+    font-family: var(--font-mono);
+}
+
+.col.dim {
+    color: #d1d5db;
+    font-size: 0.9rem;
+}
+
+.total-row {
+    background-color: #111827;
+    color: white;
+    border-bottom: none;
+    margin-top: -1px;
+    /* Overlap border */
+}
+
+.report-summary {
+    padding: 1.5rem;
+    background-color: #f0fdf4;
+    /* Light green bg */
+    border-top: 1px solid #bbf7d0;
+    color: #166534;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.total-label {
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.total-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    color: #4ade80;
+    /* Green accent for money */
+}
+
+.info-footer {
+    padding: 1rem 1.5rem;
+    background-color: #fefce8;
+    color: #854d0e;
+    font-size: 0.8rem;
+    font-family: var(--font-mono);
+    border-top: 1px solid #fef08a;
+    text-align: center;
+}
+
+/* Navigation Tabs */
+.app-nav {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding: 0 1rem;
+    flex-wrap: wrap;
+}
+
+.nav-tab {
+    background: transparent;
+    border: 2px solid var(--border-color);
+    border-radius: 99px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.nav-tab.active {
+    background: var(--accent-color);
+    color: white;
+    border-color: var(--accent-color);
+    box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+}
+
+.nav-tab:hover:not(.active) {
+    border-color: #9ca3af;
+    color: var(--text-primary);
+}
+
+/* Tab Content */
+.tab-content {
+    /* Transitions handled via JS display toggling for simplicity */
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Helper Text */
+.helper-text {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-top: -0.25rem;
+}
+
+.tiny-note {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    margin-top: 0.25rem;
+    display: block;
+}
+
+/* Action Button */
+.action-btn {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.2s;
+}
+
+.action-btn:hover {
+    background-color: var(--accent-hover);
+}
+
+/* Print Styles */
+@media print {
+    @page {
+        size: auto;
+        margin: 5mm;
+    }
+
+    .app-header,
+    .app-nav,
+    .geometry-card,
+    .config-card,
+    .params-card,
+    .prices-card,
+    .data-card,
+    .info-footer,
+    #btn-report {
+        display: none !important;
+    }
+
+    body {
+        background: white;
+        color: black;
+        font-size: 11px;
+    }
+
+    /* Print Header */
+    .print-header {
+        display: block !important;
+        margin-bottom: 0.5rem;
+        font-family: var(--font-main);
+        border: 1px solid #000;
+        padding: 0.75rem;
+        background: #fdfdfd;
+    }
+
+    .print-title {
+        font-size: 1.1rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        margin-bottom: 0.25rem;
+    }
+
+    .print-info p {
+        margin-bottom: 0.25rem;
+        font-size: 0.9rem;
+    }
+
+    .spreadsheet-container {
+        display: block;
+        padding: 0;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .results-card {
+        box-shadow: none;
+        border: none;
+        grid-column: span 1 !important;
+        width: 100% !important;
+        margin-top: 0;
+    }
+
+    .results-table {
+        width: 100% !important;
+        font-size: 11px;
+    }
+
+    .card-header {
+        background: white;
+        border-bottom: 2px solid black;
+        padding: 0.25rem 0;
+    }
+
+    .card-header h2 {
+        font-size: 1rem;
+        margin: 0;
+    }
+
+    .table-row {
+        border-bottom: 1px solid #ddd;
+        padding: 0.4rem 0;
+        grid-template-columns: 2fr 1fr 1fr 1fr 1.5fr;
+    }
+
+    .table-row.header {
+        background-color: #eee !important;
+        -webkit-print-color-adjust: exact;
+        padding: 0.5rem 0;
+        font-size: 0.8rem;
+    }
+
+    .col.money,
+    .col.total-value {
+        font-weight: bold;
+    }
+
+    .total-row {
+        background-color: #eee !important;
+        color: black !important;
+        -webkit-print-color-adjust: exact;
+        border-top: 1px solid black;
+        padding: 0.5rem 0;
+    }
+
+    .total-value {
+        color: black !important;
+        font-size: 1.1rem;
+    }
+
+    .report-summary {
+        margin-top: 0.5rem;
+        padding: 0.5rem;
+        font-size: 0.8rem;
+        border: 1px solid #000;
+        page-break-inside: avoid;
+        background-color: white !important;
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .spreadsheet-container {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+    }
+
+    .geometry-card,
+    .config-card,
+    .results-card,
+    .params-card,
+    .prices-card {
+        grid-column: span 1;
+    }
+
+    .table-row {
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        padding: 1rem;
+        border-bottom: 4px solid var(--bg-color);
+    }
+
+    .table-row.header {
+        display: none;
+        /* Hide header on mobile, use card view */
+    }
+
+    .col {
+        text-align: left !important;
+    }
+
+    .col.material-name {
+        grid-column: span 2;
+        margin-bottom: 0.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    @media screen and (max-width: 768px) {
+        .col:not(.material-name):not(.money):not(.total-value)::before {
+            content: attr(data-label);
+            display: block;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+    }
